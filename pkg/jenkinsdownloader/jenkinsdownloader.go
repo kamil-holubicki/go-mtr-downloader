@@ -107,18 +107,20 @@ func (d *jenkinsDownloader) jobLink() string {
 	return d.jobLinkBase + d.jobNo + "/"
 }
 
-func (d *jenkinsDownloader) Download() {
+func (d *jenkinsDownloader) Download() error {
 	fmt.Println("jenkinsdownloader::Download()")
 
 	fmt.Println("Job link:", d.jobLink())
 	res, err := d.downloader.Download(d.jobLink())
 	if err != nil {
 		fmt.Println(err)
-		return
+		return err
 	}
 
 	links := d.configMatrixToLinks(res)
 	d.downloadPlatformsResults(links)
+
+	return nil
 }
 
 func getBaseUrl(url string) string {
